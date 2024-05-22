@@ -19,11 +19,13 @@ while true; do
         "Get Password")
             echo "サービス名を入力してください："
             read service_name
-            grep "^$service_name:" passwords.txt > /dev/null
-            if [ $? -eq 0 ]; then
-                grep "^$service_name:" passwords.txt | cut -d ':' -f 2,3
-            else
+            # ファイルからサービス名を検索し、結果を変数に格納
+            result=$(grep "^$service_name:" passwords.txt)
+            if [ -z "$result" ]; then
                 echo "そのサービスは登録されていません。"
+            else
+                # サービス名が見つかった場合、ユーザー名とパスワードを表示
+                echo "$result" | cut -d ':' -f 2,3
             fi
             ;;
         "Exit")
